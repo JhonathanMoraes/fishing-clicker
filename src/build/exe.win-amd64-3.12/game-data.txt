@@ -1,0 +1,1 @@
+{"dinheiro": 10, "melhoria": {"preco": 10}, "peixe": {"preco": 1}}

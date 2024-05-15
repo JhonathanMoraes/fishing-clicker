@@ -1,7 +1,7 @@
 import pygame
 
-class Botao(object):
-    def __init__(self, position, image , escala):
+class Botao(pygame.sprite.Sprite):
+    def __init__(self, position, image, escala):
         width = image.get_width()
         height = image.get_height()
         self.image = pygame.transform.scale(image, (int(width * escala), int(height * escala)))
