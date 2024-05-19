@@ -3,9 +3,9 @@ from .services.scene import Scene
 
 class Window:
     @classmethod
-    def create(self, titulo, width, height):
+    def create(self, titulo, width, height, display):
         pygame.display.set_caption(titulo)
-        self.surface = pygame.display.set_mode((width, height))
+        self.surface = pygame.display.set_mode((width, height), display)
         pygame.display.set_icon(pygame.image.load(r"utils\img\fish.png"))
         self.rect = self.surface.get_rect()
         self.clock = pygame.time.Clock()

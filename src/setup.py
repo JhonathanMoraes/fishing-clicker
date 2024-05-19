@@ -1,9 +1,13 @@
 import sys
 from cx_Freeze import setup, Executable
 
+base = None
+if (sys.platform == "win32"):
+    base = "Win32GUI"
+
 executables = [Executable(
     script="clicker.py",
-    base=None,
+    base=base,
     icon=r'utils\img\fish.ico'
 )]
 
