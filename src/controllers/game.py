@@ -23,7 +23,7 @@ class Game(Scene):
   
         self.sprites = {
             'peixe': pygame.image.load(r"utils\img\fish.png").convert_alpha(),
-            'melhoria': pygame.image.load(r"utils\img\botao_melhoria.png").convert_alpha(),
+            'melhorias': pygame.image.load(r"utils\img\botao_melhoria.png").convert_alpha(),
             'seta_esquerda': pygame.image.load(r"utils\img\botao_seta_esquerda.png").convert_alpha(),
             'seta_direita': pygame.image.load(r"utils\img\botao_seta_direita.png").convert_alpha()
         }
@@ -57,7 +57,7 @@ class Game(Scene):
 
         self.fish = Botao((self.screen_width / 2, self.screen_height / 3), self.sprites['peixe'], 2)
 
-        self.melhoria = Botao((160, 60), self.sprites['melhoria'], 1)
+        self.melhorias = Botao((160, 60), self.sprites['melhorias'], 1)
 
 
     # Renderização dos sprites e formas
@@ -77,9 +77,9 @@ class Game(Scene):
         Texto(self.fonte, f'Cesta: {len(self.cesta.itens)}/{self.cesta.maximo}', (255, 255, 255), [20, 110]).draw(surface)
         self.fish.draw(surface)
 
-        if self.data['melhoria']['preco'] <= self.data['dinheiro']:
-            self.melhoria.draw(surface)
-            Texto(self.fonte, f'Melhorar: ${self.data['melhoria']['preco']}', (255, 255, 255), [160, 90]).draw(surface)
+        if self.data['melhorias']['preco'] <= self.data['dinheiro']:
+            self.melhorias.draw(surface)
+            Texto(self.fonte, f'Melhorar: ${self.data['melhorias']['preco']}', (255, 255, 255), [160, 90]).draw(surface)
 
 
         if self.progress_bar['fish'].running:
@@ -143,13 +143,13 @@ class Game(Scene):
                         self.progress_bar['fish'].running = True
 
                 
-                elif self.melhoria.on_event():
-                    if self.data['dinheiro'] >= self.data['melhoria']['preco']:
-                        texto_timer = Texto(self.fonte, self.data['dinheiro'], (240, 40, 10), [20, 20], -self.data['melhoria']['preco'], 400)
+                elif self.melhorias.on_event():
+                    if self.data['dinheiro'] >= self.data['melhorias']['preco']:
+                        texto_timer = Texto(self.fonte, self.data['dinheiro'], (240, 40, 10), [20, 20], -self.data['melhorias']['preco'], 400)
                         self.fluxo_moedas.append(texto_timer)
 
-                        self.data['dinheiro'] -= self.data['melhoria']['preco']
-                        self.data['melhoria']['preco'] = int(self.data['melhoria']['preco'] * 1.5)
+                        self.data['dinheiro'] -= self.data['melhorias']['preco']
+                        self.data['melhorias']['preco'] = int(self.data['melhorias']['preco'] * 1.5)
                         self.data['peixe']['preco'] *= 2
 
                 elif self.botao_painel.on_event():
@@ -162,7 +162,7 @@ class Game(Scene):
             if self.fish.on_event():
                 pygame.mouse.set_cursor(pygame.cursors.Cursor(pygame.SYSTEM_CURSOR_HAND))
 
-            elif self.melhoria.on_event() and self.data['dinheiro'] >= self.data['melhoria']['preco']:
+            elif self.melhorias.on_event() and self.data['dinheiro'] >= self.data['melhorias']['preco']:
                 pygame.mouse.set_cursor(pygame.cursors.Cursor(pygame.SYSTEM_CURSOR_HAND))
 
             elif self.botao_painel.on_event():
