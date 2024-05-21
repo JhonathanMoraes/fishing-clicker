@@ -9,15 +9,14 @@ try:
         config = json.load(load_config) 
 
 except: 
-    with open('game-config.txt', 'w') as load_config: 
+    with open('game-config.txt', 'w') as load_config:
         config = {
             "screen": {
                 "width": 1024,
                 "height" : 600,
-                "display": pygame.RESIZABLE
+                "display": 0
             }
         }
-
         json.dump(config, load_config)
 
 def main():

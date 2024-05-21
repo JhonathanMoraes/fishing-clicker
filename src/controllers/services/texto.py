@@ -8,6 +8,7 @@ class Texto(object):
         self.image = self.fonte.render(str(self.texto), 1, cor)
         self.position = position
         self.rect = self.image.get_rect(topleft=self.position)
+        self.rect.midleft = self.position
         self.fluxo = fluxo
         self.delay = delay
 
@@ -19,7 +20,7 @@ class Texto(object):
             self.image = self.fonte.render(f'+${self.fluxo}', 1, self.cor)
             self.image.set_alpha(self.delay)
             self.position[1] -= 1 if self.position[1] >= 1 else 0
-            self.rect = self.image.get_rect(topleft=[self.position[0], self.position[1] + 25])
+            self.rect = self.image.get_rect(topleft=[self.position[0], self.position[1] + 20])
             surface.blit(self.image, self.rect)
 
     def draw_gastos(self, surface):
