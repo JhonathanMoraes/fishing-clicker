@@ -11,17 +11,21 @@ try:
 except: 
     with open('game-config.txt', 'w') as load_config:
         config = {
-            "screen": {
-                "width": 1024,
-                "height" : 600,
-                "display": 0
+            'screen': {
+                'width': 1024,
+                'height' : 600,
+                'display': 0
+            },
+
+            'game': {
+                'titulo': 'Fishing Clicker'
             }
         }
         json.dump(config, load_config)
 
 def main():
     pygame.init()
-    Window.create("Fishing Clicker", config['screen']['width'], config['screen']['height'], config['screen']['display'])
+    Window.create(config['game']['titulo'], config['screen']['width'], config['screen']['height'], config['screen']['display'])
     Window.scene = Game()
     Window.mainloop()
 
