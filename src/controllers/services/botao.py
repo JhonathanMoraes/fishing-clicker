@@ -9,11 +9,28 @@ class Botao(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = self.position
 
+        self.angulo = 0
+        self.direction = True
+
     def draw(self, surface):
         surface.blit(self.image, self.rect)
 
     def move(self, x, y):
         self.rect.move_ip(x, y)
+
+    def shake(self, surface):
+        if self.angulo <= 5 and self.direction:
+            self.angulo += 0.2
+        else:
+            self.direction = False
+        
+            if self.angulo >= -5:
+                self.angulo -= 0.2
+            else:
+                self.direction = not self.direction
+
+        image = pygame.transform.rotate(self.image, self.angulo)
+        surface.blit(image, self.rect)
     
     def on_event(self):
         if self.rect.collidepoint(pygame.mouse.get_pos()):
