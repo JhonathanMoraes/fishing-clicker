@@ -6,8 +6,7 @@ class Botao(pygame.sprite.Sprite):
         height = image.get_height()
         self.position = position
         self.image = pygame.transform.scale(image, (int(width * escala), int(height * escala)))
-        self.rect = self.image.get_rect()
-        self.rect.center = self.position
+        self.rect = self.image.get_rect(center = self.position)
 
         self.angulo = 0
         self.direction = True

@@ -21,7 +21,7 @@ class Painel(object):
             x, y = self.x, 55
             for melhoria in self.melhorias:
                 if self.melhorias[melhoria].categoria == categoria:
-                    self.melhorias[melhoria].draw_melhorias(surface, x, y, self.width, self.height, dinheiro_total)
+                    self.melhorias[melhoria].draw_melhorias(surface, melhoria, x, y, self.width, self.height, dinheiro_total)
                     y += 100
 
     def alternar_exibicao(self):

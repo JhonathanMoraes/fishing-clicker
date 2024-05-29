@@ -3,6 +3,7 @@ import json
 from models.cesta import Cesta
 from models.melhoria import Melhoria
 from .painel import Painel
+from .background import Background
 from .services.dinheiro import Dinheiro
 from .services.texto import Texto
 from .services.scene import Scene
@@ -20,27 +21,35 @@ class Game(Scene):
                 'dinheiro': 0,
                 'cesta': {'maximo': 5, 'tempo_venda': 50, 'itens': []},
                 'melhorias': {
-                    'Duplicar valor dos peixes': {
-                        'categoria': 'Pescaria', 
-                        'descricao': 'Duplicar valor dos peixes.',
+                    'Peixes raros': {
+                        'categoria': 'Pesca', 
+                        'descricao': 'Aumenta o valor dos peixes em 50%.',
                         'nivel': 0,
                         'nivel_maximo': 10,
-                        'preco': 10
+                        'preco': 50
                         },
+                    'Iscas vivas': {
+                        'categoria': 'Pesca', 
+                        'descricao': 'Reduz o tempo de pesca em 5.',
+                        'nivel': 0,
+                        'nivel_maximo': 12,
+                        'preco': 20
+                        },
+
                     'Cesta maior': {
                         'categoria': 'Barco', 
-                        'descricao': '+1 de capacidade na cesta.',
+                        'descricao': '+1 de capacidade da cesta.',
                         'nivel': 0,
                         'nivel_maximo': 5,
-                        'preco': 10
+                        'preco': 40
                         }
                 },
                 'progress_bar': {
-                    'tempo de pesca': {'tempo': 20},
-                    'tempo de venda': {'tempo': 30}
+                    'tempo de pesca': {'tempo': 70},
+                    'tempo de venda': {'tempo': 100}
                 },
 
-                'peixe': {'preco': 1}
+                'peixe': {'preco': 5}
             },
 
         }
@@ -53,33 +62,37 @@ class Game(Scene):
             with open('game-data.txt', 'w') as store_file: 
                 json.dump(self.data, store_file)
 
-        try:
-            self.fonte = pygame.font.Font(r"utils\fonts\Grand9K Pixel.ttf", 18)
-        except:
-            self.fonte = pygame.font.Font(None, 18)
-
+        self.fonte = pygame.font.Font(r"utils\fonts\Grand9K Pixel.ttf", 18)
 
         self.sprites = {
             'pescador': pygame.image.load(r"utils\img\pescador.png").convert_alpha(),
             'melhoria': pygame.image.load(r"utils\img\botao_melhoria.png").convert_alpha(),
             'seta_esquerda': pygame.image.load(r"utils\img\botao_seta_esquerda.png").convert_alpha(),
             'seta_direita': pygame.image.load(r"utils\img\botao_seta_direita.png").convert_alpha(),
-            'botao_grande': pygame.image.load(r"utils\img\botao_grande.png").convert_alpha(),
+            'botao_pesca': pygame.image.load(r"utils\img\botao_pesca.png").convert_alpha(),
+            'botao_barco': pygame.image.load(r"utils\img\botao_barco.png").convert_alpha(),
             'cesta_vazia': pygame.image.load(r"utils\img\cesta_vazia.png").convert_alpha(),
             'cesta_cheia': pygame.image.load(r"utils\img\cesta_cheia.png").convert_alpha(),
-            'barco': pygame.image.load(r'utils\img\barco.png').convert_alpha(),
-            'vara_pesca': pygame.image.load(r'utils\img\vara_pesca.png').convert_alpha()
         }
 
         self.melhorias = {
-            'Duplicar valor dos peixes': Melhoria(
+            'Peixes raros': Melhoria(
                     Botao((0, 0), self.sprites['melhoria'], 1), 
-                    self.data['game']['melhorias']['Duplicar valor dos peixes']['categoria'],
-                    self.data['game']['melhorias']['Duplicar valor dos peixes']['descricao'], 
-                    self.data['game']['melhorias']['Duplicar valor dos peixes']['nivel'], 
-                    self.data['game']['melhorias']['Duplicar valor dos peixes']['nivel_maximo'], 
-                    self.data['game']['melhorias']['Duplicar valor dos peixes']['preco']
+                    self.data['game']['melhorias']['Peixes raros']['categoria'],
+                    self.data['game']['melhorias']['Peixes raros']['descricao'], 
+                    self.data['game']['melhorias']['Peixes raros']['nivel'], 
+                    self.data['game']['melhorias']['Peixes raros']['nivel_maximo'], 
+                    self.data['game']['melhorias']['Peixes raros']['preco']
                 ),
+            'Iscas vivas': Melhoria(
+                    Botao((0, 0), self.sprites['melhoria'], 1), 
+                    self.data['game']['melhorias']['Iscas vivas']['categoria'],
+                    self.data['game']['melhorias']['Iscas vivas']['descricao'], 
+                    self.data['game']['melhorias']['Iscas vivas']['nivel'], 
+                    self.data['game']['melhorias']['Iscas vivas']['nivel_maximo'], 
+                    self.data['game']['melhorias']['Iscas vivas']['preco']
+                ),
+
             'Cesta maior': Melhoria(
                 Botao((0, 0), self.sprites['melhoria'], 1), 
                 self.data['game']['melhorias']['Cesta maior']['categoria'], 
@@ -91,36 +104,34 @@ class Game(Scene):
         }
 
         self.progress_bar = {
-            'tempo de pesca': Progress_bar((self.screen_width / 2 - 30, self.screen_height / 1.7), [60, 5], self.data['game']['progress_bar']['tempo de pesca']['tempo']),
+            'tempo de pesca': Progress_bar((self.screen_width / 2 - 50, self.screen_height / 1.8), [100, 10], self.data['game']['progress_bar']['tempo de pesca']['tempo']),
             'tempo de venda': Progress_bar((20, 150),[50, 10], self.data['game']['progress_bar']['tempo de venda']['tempo'])
         }
+
+        self.background = Background()
 
         self.cesta = Cesta(self.data['game']['cesta']['maximo'], self.data['game']['cesta']['tempo_venda'], self.sprites['cesta_cheia'], (10, 90),self.data['game']['cesta']['itens'])
         self.fluxo_moedas = []
 
         self.painel = Painel(self.melhorias, self.screen_width - 300, 0, 300, self.screen_height)
-        self.tab_painel = 'Pescaria'
-        self.botao_tab_pesca_painel = Botao((self.screen_width - 220, self.screen_height / 1.05), self.sprites['botao_grande'], 1)
-        self.botao_tab_barco_painel = Botao((self.screen_width - 80, self.screen_height / 1.05), self.sprites['botao_grande'], 1)
+        self.tab_painel = 'Pesca'
+        self.botao_tab_pesca_painel = Botao((self.screen_width - 220, self.screen_height / 1.05), self.sprites['botao_pesca'], 1)
+        self.botao_tab_barco_painel = Botao((self.screen_width - 80, self.screen_height / 1.05), self.sprites['botao_barco'], 1)
         self.expand_painel = Botao((700, 30), self.sprites['seta_direita'], 1)
 
-        self.pescador = Botao((self.screen_width / 2, self.screen_height / 1.5), self.sprites['pescador'], 2)
+        self.pescador = Botao((self.screen_width / 2, self.screen_height / 1.5), self.sprites['pescador'], 3)
 
 
     # Renderização dos sprites e formas
     def on_draw(self, surface):
         surface.fill(pygame.Color(50, 150, 210))
-        pygame.draw.rect(surface, (20, 130, 190), (0, self.screen_height / 1.5, self.screen_width, self.screen_height))
-
+        self.background.draw(surface)
 
         if self.painel.exibir:
             self.painel.draw(surface, self.tab_painel, self.data['game']['dinheiro'])
 
             self.botao_tab_pesca_painel.draw(surface)
-            Botao((self.screen_width - 220, self.screen_height / 1.05), self.sprites['vara_pesca'], 1).draw(surface)
-
             self.botao_tab_barco_painel.draw(surface)
-            Botao((self.screen_width - 80, self.screen_height / 1.05), self.sprites['barco'], 1).draw(surface)
 
             self.expand_painel = Botao((700, 30), self.sprites['seta_direita'], 1)
         else:
@@ -131,7 +142,7 @@ class Game(Scene):
 
 
         Dinheiro(self.fonte, self.data['game']['dinheiro'], (255, 255, 255), [20, 20]).draw(surface)
-        Texto(self.fonte, f'Cesta: {len(self.cesta.itens)}/{self.cesta.maximo}' if len(self.cesta.itens) < self.cesta.maximo else 'Cheio!', (255, 255, 255), [50, 110]).draw(surface)
+        Texto(self.fonte, f'Peixes: {len(self.cesta.itens)}/{self.cesta.maximo}' if len(self.cesta.itens) < self.cesta.maximo else 'Cesta cheia!', (255, 255, 255), [50, 110]).draw(surface)
         if len(self.cesta.itens) < self.cesta.maximo:
             self.cesta.sprite = self.sprites['cesta_vazia']
         else:
@@ -177,7 +188,7 @@ class Game(Scene):
                 fluxo_moedas.append(text)
 
         self.fluxo_moedas = fluxo_moedas
-        
+
         self.pescador.update(delta)
 
     # Event handler - aciona funções a partir de comandos de mouse e teclado
@@ -212,10 +223,11 @@ class Game(Scene):
 
                 if self.painel.exibir:
                     if self.botao_tab_pesca_painel.on_event():
-                        self.tab_painel = 'Pescaria'
+                        self.tab_painel = 'Pesca'
                 
                     if self.botao_tab_barco_painel.on_event():
                         self.tab_painel = 'Barco'
+                        
                 
                 for melhoria in self.melhorias:
                     if self.melhorias[melhoria].botao.on_event() and self.melhorias[melhoria].preco <= self.data['game']['dinheiro']:
@@ -225,16 +237,32 @@ class Game(Scene):
                                 self.fluxo_moedas.append(texto_timer)
 
                                 self.data['game']['dinheiro'] -= self.melhorias[melhoria].preco
-                                self.melhorias[melhoria].nivel += 1
 
 
-                                if melhoria == 'Duplicar valor dos peixes':
-                                    self.data['game']['peixe']['preco'] *= 2
-                                    self.melhorias[melhoria].preco *= 3
+                                if melhoria == 'Peixes raros':
+                                    self.data['game']['peixe']['preco'] = int(self.data['game']['peixe']['preco'] * 1.5)
+
+                                    self.data['game']['melhorias']['Peixes raros']['nivel'] += 1
+                                    self.data['game']['melhorias']['Peixes raros']['preco'] *= 2
+
+
+                                elif melhoria == 'Iscas vivas':
+                                    self.data['game']['progress_bar']['tempo de pesca']['tempo'] -= 5
+
+                                    self.data['game']['melhorias']['Iscas vivas']['nivel'] += 1
+                                    self.data['game']['melhorias']['Iscas vivas']['preco'] += 300
                                 
-                                if melhoria == 'Cesta maior':
-                                    self.cesta.maximo += 1
-                                    self.melhorias[melhoria].preco = int(self.melhorias[melhoria].preco * 1.5)
+                                
+                                elif melhoria == 'Cesta maior':
+                                    self.data['game']['cesta']['maximo'] += 1
+                                    self.cesta.maximo = self.data['game']['cesta']['maximo']
+
+                                    self.data['game']['melhorias']['Cesta maior']['nivel'] += 1
+                                    self.data['game']['melhorias']['Cesta maior']['preco'] = int(self.data['game']['melhorias']['Cesta maior']['preco'] * 1.5)
+
+
+                                self.melhorias[melhoria].nivel = self.data['game']['melhorias'][melhoria]['nivel']
+                                self.melhorias[melhoria].preco = self.data['game']['melhorias'][melhoria]['preco']
 
 
         # Mouse move events

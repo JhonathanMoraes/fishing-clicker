@@ -1,6 +1,5 @@
-from models.peixe import Peixe
 from controllers.window import Window
-from controllers.game import Game
+from controllers.menu import Menu
 import json
 import pygame
 
@@ -18,7 +17,7 @@ except:
             },
 
             'game': {
-                'titulo': 'Fishing Clicker'
+                'titulo': 'Koi Clicker'
             }
         }
         json.dump(config, load_config)
@@ -26,7 +25,7 @@ except:
 def main():
     pygame.init()
     Window.create(config['game']['titulo'], config['screen']['width'], config['screen']['height'], config['screen']['display'])
-    Window.scene = Game()
+    Window.scene = Menu()
     Window.mainloop()
 
 main()
