@@ -10,6 +10,10 @@ class Menu(Scene):
         self.screen_width = pygame.display.Info().current_w
         self.screen_height = pygame.display.Info().current_h
 
+        menu_music = pygame.mixer.music.load(r'utils\music\menu-music.mp3')
+        pygame.mixer.music.set_volume(0.05)
+        pygame.mixer.music.play()
+
         self.sprites = {
             'jogar': pygame.image.load(r'utils\img\botao_jogar.png').convert_alpha(),
             'sair': pygame.image.load(r'utils\img\botao_sair.png').convert_alpha()
@@ -27,6 +31,9 @@ class Menu(Scene):
 
     # Event handler - aciona funções a partir de comandos de mouse e teclado
     def on_event(self, event):
+        button_menu_sound = pygame.mixer.Sound(r'utils\music\menu-button.wav')
+        button_menu_sound.set_volume(0.1)
+
         if event.type == pygame.QUIT:
             Window.running = False
 
@@ -39,9 +46,11 @@ class Menu(Scene):
         elif event.type == pygame.MOUSEBUTTONDOWN:
             if pygame.mouse.get_pressed()[0]:
                 if self.jogar.on_event():
+                    button_menu_sound.play()
                     Window.scene = Game()
 
                 elif self.sair.on_event():
+                    button_menu_sound.play()
                     Window.running = False
 
 

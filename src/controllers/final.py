@@ -13,6 +13,10 @@ class Final(Scene):
 
         self.fonte = pygame.font.Font(r"utils\fonts\Grand9K Pixel.ttf", 18)
 
+        menu_music = pygame.mixer.music.load(r'utils\music\menu-music.mp3')
+        pygame.mixer.music.set_volume(0.05)
+        pygame.mixer.music.play()
+
         self.data = {
             'game': {
                 'dinheiro': 0,
@@ -97,6 +101,9 @@ class Final(Scene):
 
     # Event handler - aciona funções a partir de comandos de mouse e teclado
     def on_event(self, event):
+        button_sound = pygame.mixer.Sound(r'utils\music\button-sound.wav')
+        button_sound.set_volume(0.5)
+
         if event.type == pygame.QUIT:
             Window.running = False
 
@@ -109,6 +116,7 @@ class Final(Scene):
         elif event.type == pygame.MOUSEBUTTONDOWN:
             if pygame.mouse.get_pressed()[0]:
                 if self.sair.on_event():
+                    button_sound.play()
                     Window.running = False
 
 

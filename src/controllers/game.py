@@ -18,6 +18,10 @@ class Game(Scene):
         self.screen_width = pygame.display.Info().current_w
         self.screen_height = pygame.display.Info().current_h
 
+        game_music = pygame.mixer.music.load(r'utils\music\game-music.mp3')
+        pygame.mixer.music.set_volume(0.05)
+        pygame.mixer.music.play(-1)
+
         self.data = { 
             'game': {
                 'dinheiro': 0,
@@ -254,6 +258,9 @@ class Game(Scene):
 
     # Event handler - aciona funções a partir de comandos de mouse e teclado
     def on_event(self, event):
+        button_sound = pygame.mixer.Sound(r'utils\music\button-sound.wav')
+        button_sound.set_volume(0.5)
+
         if event.type == pygame.QUIT:
             with open('game-data.txt', 'w') as store_data:
                 json.dump(self.data, store_data)
@@ -276,16 +283,20 @@ class Game(Scene):
                     if self.progress_bar['tempo de pesca'].running:
                         self.progress_bar['tempo de pesca'].progress += 100 / self.progress_bar['tempo de pesca'].tempo
                     else:
+                        button_sound.play()
                         self.progress_bar['tempo de pesca'].running = True
 
                 elif self.expand_painel.on_event():
+                    button_sound.play()
                     self.painel.alternar_exibicao()
 
                 if self.painel.exibir:
                     if self.botao_tab_pesca_painel.on_event():
+                        button_sound.play()
                         self.tab_painel = 'Pesca'
                 
                     if self.botao_tab_barco_painel.on_event():
+                        button_sound.play()
                         self.tab_painel = 'Barco'
                         
                 
@@ -293,6 +304,8 @@ class Game(Scene):
                     if self.melhorias[melhoria].botao.on_event() and self.melhorias[melhoria].preco <= self.data['game']['dinheiro']:
                         if self.melhorias[melhoria].categoria == self.tab_painel:
                             if self.melhorias[melhoria].nivel < self.melhorias[melhoria].nivel_maximo:
+                                button_sound.play()
+
                                 texto_timer = Dinheiro(self.fonte, self.data['game']['dinheiro'], (240, 40, 10), [20, 20], -self.melhorias[melhoria].preco, 400)
                                 self.fluxo_moedas.append(texto_timer)
 
