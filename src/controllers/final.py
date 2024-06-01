@@ -1,5 +1,5 @@
-import os
 import pygame
+import json
 from .background import Background
 from .services.texto import Texto
 from .services.scene import Scene
@@ -13,7 +13,61 @@ class Final(Scene):
 
         self.fonte = pygame.font.Font(r"utils\fonts\Grand9K Pixel.ttf", 18)
 
-        os.remove('game-data.txt')
+        self.data = {
+            'game': {
+                'dinheiro': 0,
+                'cesta': {'maximo': 5, 'tempo_venda': 50, 'itens': []},
+                'melhorias': {
+                    'Peixes raros': {
+                        'categoria': 'Pesca', 
+                        'descricao': 'Aumenta o valor dos peixes em 50%.',
+                        'nivel': 0,
+                        'nivel_maximo': 20,
+                        'preco': 50
+                        },
+                    'Iscas vivas': {
+                        'categoria': 'Pesca', 
+                        'descricao': 'Reduz o tempo de pesca em 5.',
+                        'nivel': 0,
+                        'nivel_maximo': 12,
+                        'preco': 20
+                        },
+
+                    'Cesta maior': {
+                        'categoria': 'Barco', 
+                        'descricao': '+1 de capacidade da cesta.',
+                        'nivel': 0,
+                        'nivel_maximo': 5,
+                        'preco': 40
+                        },
+                    'Barco mais rápido': {
+                        'categoria': 'Barco', 
+                        'descricao': 'Reduz o tempo de venda em 10.',
+                        'nivel': 0,
+                        'nivel_maximo': 5,
+                        'preco': 40
+                        },
+                    'Investimentos': {
+                        'categoria': 'Barco', 
+                        'descricao': 'Renda passiva de 1% do valor investido.',
+                        'nivel': 0,
+                        'nivel_maximo': 10,
+                        'preco': 100
+                    }
+                },
+                'progress_bar': {
+                    'tempo de pesca': {'tempo': 70},
+                    'tempo de venda': {'tempo': 100},
+                    'tempo de renda passiva': {'tempo': 10}
+                },
+
+                'peixe': {'preco': 10},
+                'renda passiva': 0
+            }
+        }
+
+        with open('game-data.txt', 'w') as store_data:
+            json.dump(self.data, store_data)
 
         self.sprites = {
             'koi': pygame.image.load(r'utils\img\koi.png').convert_alpha(),
