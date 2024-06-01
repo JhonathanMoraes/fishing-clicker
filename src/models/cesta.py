@@ -6,12 +6,14 @@ class Cesta(object):
         self.maximo = maximo
         self.tempo_venda = tempo_venda
 
+        self.position = position
         self.sprite = sprite
-        self.rect = self.sprite.get_rect()
-        self.rect.topleft = position
+        self.rect = sprite.get_rect(midleft= self.position)
 
     def draw(self, surface):
-        surface.blit(self.sprite, self.rect)
+        image = pygame.transform.scale(self.sprite, (100, 100))
+        self.rect = image.get_rect(midleft= self.position)
+        surface.blit(image, self.rect)
 
     def new_item(self, item):
         self.itens.append(item)
@@ -21,6 +23,12 @@ class Cesta(object):
 
     def espaco_disponivel(self):
         if len(self.itens) < self.maximo:
+            return True
+        
+        return False
+
+    def on_hover(self):
+        if self.rect.collidepoint(pygame.mouse.get_pos()):
             return True
         
         return False

@@ -24,10 +24,10 @@ class Melhoria(object):
         rect.topleft = (x, y)
         pygame.draw.rect(surface, (120, 80, 20), rect)
 
-        rect.topleft = (x + 5, y + 5)
+        rect.topleft = (x + 5, y)
         surface.blit(texto_nome, rect)
 
-        rect.topleft = (x + 5, y + 35)
+        rect.topleft = (x + 5, y + 25)
         surface.blit(texto_descricao, rect)
 
         if self.nivel < self.nivel_maximo:
