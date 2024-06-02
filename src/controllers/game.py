@@ -280,10 +280,10 @@ class Game(Scene):
         elif event.type == pygame.MOUSEBUTTONDOWN:
             if pygame.mouse.get_pressed()[0]:
                 if self.pescador.on_event() and self.cesta.espaco_disponivel():
+                    button_sound.play()
                     if self.progress_bar['tempo de pesca'].running:
                         self.progress_bar['tempo de pesca'].progress += 100 / self.progress_bar['tempo de pesca'].tempo
                     else:
-                        button_sound.play()
                         self.progress_bar['tempo de pesca'].running = True
 
                 elif self.expand_painel.on_event():
