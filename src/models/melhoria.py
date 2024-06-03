@@ -1,7 +1,7 @@
 import pygame
 from numerize import numerize 
 
-class Melhoria(object):
+class Melhoria:
     def __init__(self, botao, categoria, descricao, nivel, nivel_maximo, preco):
         self.fonte = r"utils\fonts\Grand9K Pixel.ttf"
         self.botao = botao

@@ -1,6 +1,6 @@
 import pygame
 
-class Cesta(object):
+class Cesta:
     def __init__(self, maximo, tempo_venda, sprite, position, itens=[]):
         self.itens = itens
         self.maximo = maximo
@@ -32,3 +32,4 @@ class Cesta(object):
             return True
         
         return False
+

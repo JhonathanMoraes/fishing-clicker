@@ -1,6 +1,6 @@
 import pygame
 
-class Texto(object):
+class Texto:
     def __init__(self, fonte, texto, cor, position):
         self.fonte = fonte
         self.texto = texto

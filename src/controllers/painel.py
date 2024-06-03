@@ -1,7 +1,7 @@
 import pygame
 from .services.texto import Texto
 
-class Painel(object):
+class Painel:
     def __init__(self, melhorias, x, y, width, height):
         self.fonte = r"utils\fonts\Grand9K Pixel.ttf"
         self.melhorias = melhorias

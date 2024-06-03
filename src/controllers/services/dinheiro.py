@@ -1,7 +1,7 @@
 import pygame
 from numerize import numerize 
 
-class Dinheiro(object):
+class Dinheiro:
     def __init__(self, fonte, dinheiro, cor, position, fluxo=0, delay=3000):
         self.fonte = fonte
         self.dinheiro = numerize.numerize(dinheiro, 2)

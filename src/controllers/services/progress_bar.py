@@ -1,6 +1,6 @@
 import pygame
 
-class Progress_bar(object):
+class Progress_bar:
     def __init__(self, pos, tamanho, tempo, running=False, progress=0):
         self.pos = pos
         self.tamanho = tamanho
@@ -26,3 +26,4 @@ class Progress_bar(object):
             return True
         
         return False
+

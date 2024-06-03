@@ -18,15 +18,13 @@ class Botao(pygame.sprite.Sprite):
         self.rect.move_ip(x, y)
 
     def shake(self, surface):
-        if self.angulo <= 5 and self.direction:
+        if self.angulo > 5 or self.angulo < -5:
+            self.direction = not self.direction
+        
+        if self.direction:
             self.angulo += 0.2
         else:
-            self.direction = False
-        
-            if self.angulo >= -5:
-                self.angulo -= 0.2
-            else:
-                self.direction = not self.direction
+            self.angulo -= 0.2
 
         image = pygame.transform.rotate(self.image, self.angulo)
         surface.blit(image, self.rect)
@@ -36,3 +34,4 @@ class Botao(pygame.sprite.Sprite):
             return True
         
         return False
+
